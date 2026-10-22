@@ -1031,6 +1031,55 @@ export const services: ServiceDef[] = [
     ],
   },
 
+  // ── Livecheck ───────────────────────────────────────────────────────
+  {
+    id: "livecheck",
+    name: "Livecheck",
+    url: "https://livecheck.fly.dev",
+    serviceUrl: "https://livecheck.fly.dev",
+    description:
+      "Verify live status: is this job posting still open (Greenhouse, Lever, Ashby, Workday)? Is this product still available or sold out (Shopify, eBay)? Returns live (open or in stock), closed, or unknown, with evidence from the listing page.",
+
+    categories: ["data", "web"],
+    integration: "first-party",
+    tags: [
+      "jobs",
+      "job-postings",
+      "listings",
+      "products",
+      "product-availability",
+      "in-stock",
+      "sold-out",
+      "link-check",
+      "verification",
+    ],
+    docs: {
+      homepage: "https://livecheck.fly.dev/job?ref=mppdev",
+      llmsTxt: "https://livecheck.fly.dev/llms.txt",
+    },
+    provider: { name: "Livecheck", url: "https://livecheck.fly.dev" },
+    realm: "livecheck.fly.dev",
+    intent: "charge",
+    payments: [TEMPO_PAYMENT],
+    endpoints: [
+      {
+        route: "POST /v1/verify",
+        desc: "Check whether a job posting or product listing URL is live, closed, or unknown, with evidence",
+        amount: "10000",
+      },
+      {
+        route: "POST /v1/verify/job",
+        desc: "Is this job posting still open (Greenhouse, Lever, Ashby, Workday)? Returns live/closed/unknown + evidence",
+        amount: "10000",
+      },
+      {
+        route: "POST /v1/verify/listing",
+        desc: "Is this product still available or sold out (Shopify, eBay)? Returns live (in stock), closed (sold out or ended), or unknown + evidence",
+        amount: "10000",
+      },
+    ],
+  },
+
   // ── Laso Finance ─────────────────────────────────────────────────────
   {
     id: "laso-finance",
@@ -4643,39 +4692,6 @@ export const services: ServiceDef[] = [
       {
         route: "GET /api/site/domain/status",
         desc: "Check TLS provisioning status",
-      },
-    ],
-  },
-
-  // ── Code Storage ───────────────────────────────────────────────────────
-  {
-    id: "codestorage",
-    name: "Code Storage",
-    url: "https://code.storage",
-    serviceUrl: `https://codestorage.${MPP_REALM}`,
-    description:
-      "Paid Git repository creation — create repos and get authenticated clone URLs.",
-
-    categories: ["storage"],
-    integration: "third-party",
-    tags: ["git", "repos", "code", "storage"],
-    docs: {
-      llmsTxt: "https://code.storage/docs/llms.txt",
-    },
-    provider: { name: "Code Storage", url: "https://code.storage" },
-    realm: MPP_REALM,
-    intent: "charge",
-    payments: [TEMPO_PAYMENT],
-    endpoints: [
-      {
-        route: "GET /repos/:id",
-        desc: "Get clone URL for a repository",
-        amount: "10000",
-      },
-      {
-        route: "POST /repos",
-        desc: "Create a Git repository",
-        amount: "1000000",
       },
     ],
   },
